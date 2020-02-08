@@ -1,15 +1,24 @@
 'use strict';
 
 const express = require('express');
+const cors = require('cors');
+const morgan = require('morgan');
 const basicAuth = require('../src/lib/basic-auth-middleware.js');
-const users = require('../src//lib/users.js');
+const users = require('../src/lib/users.js');
 
-const app = express();
+const server = express();
 
-app.use(express.static('./public'));
-app.use(express.json());
+server.use(cors());
+server.use(morgan('dev'));
 
-app.post('/signup', (req, res) => {
+
+server.use(express.json());
+server.use(express.urlencoded({ extended: true }));
+
+server.use(basicAuth);
+
+
+server.post('/signup', (req, res) => {
     try {
         users.save(req.body)
             .then(user => {
@@ -24,14 +33,19 @@ app.post('/signup', (req, res) => {
 
 });
 
-app.post('/signin', basicAuth, (req, res) => {
+server.post('/signin', basicAuth, (req, res) => {
     res.status(200).send(req.token);
 });
 
-app.get('/users', basicAuth, (req, res) => {
+server.get('/users', basicAuth, (req, res) => {
     res.status(200).json(users.list());
 });
 
 
-let PORT = 3000;
-app.listen(PORT, () => console.log(`server listen on port ${PORT}`));
+module.exports = {
+    server: server,
+    start: port => {
+        let PORT = port || process.env.PORT || 3000;
+        server.listen(PORT, () => console.log(`SERVER IS LISTEN ON PORT ${PORT}`));
+    },
+};

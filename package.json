@@ -6,9 +6,11 @@
     "scripts": {
         "start": "node index.js",
         "watch": "nodemon index.js",
-        "test": "jest --verbose --coverage --watch-All",
-        "lint": "eslint '**/*.js' --fix"
+        "lint": "eslint '**/*.js' --fix",
+        "test": "jest --verbose --coverage"
     },
+
+
     "repository": {
         "type": "git",
         "url": "git+https://github.com/401-advanced-javascript-obadaalmatrami/lab-11-Authentication.git"
@@ -23,7 +25,7 @@
     "dependencies": {
         "@code-fellows/supergoose": "^1.0.1",
         "base-64": "^0.1.0",
-        "bcrypt": "^3.0.8",
+        "bcryptjs": "^2.4.3",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
         "eslint": "^6.8.0",
